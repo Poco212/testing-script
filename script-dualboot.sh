@@ -12,7 +12,9 @@ mount $ROOT /mnt
 }
 
 root_partition
-
+clear &&
+sleep 2 &&
+echo "root partition done"
 # boot partition
 
 function boot_partition {
@@ -54,3 +56,14 @@ packages
 # chroot
 
 arch-chroot /mnt
+
+#hostname
+
+function hostname {
+echo "testing" > /etc/hostname
+}
+
+hostname
+echo "hostname done"
+
+#zoneinfo
