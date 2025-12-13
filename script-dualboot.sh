@@ -67,7 +67,7 @@ sleep 2
 
 # chroot
 
-arch-chroot /mnt
+arch-chroot /mnt /bin/bash
 
 #hostname
 clear &&
