@@ -74,7 +74,7 @@ network
 
 clear &&
 echo "network configurated"
-sleep2
+sleep 2
 
 # chroot
 arch-chroot /mnt 
