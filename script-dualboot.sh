@@ -1,4 +1,5 @@
-!/bin/bash
+NAME=null
+PASS=1511
 EFI=/dev/
 BOOT=/dev/
 ROOT=/dev/
@@ -6,17 +7,18 @@ HOME=/dev
 
 # root partition
 function root_partition {
-mkfs.ext4 /dev/$ROOT &&
-mount /dev/$ROOT /mnt &&
+yes | mkfs.ext4 $ROOT &&
+mount $ROOT /mnt
 }
 
 root_partition
+
 # boot partition
 
 function boot_partition {
 mkdir -p /mnt/boot &&
-mkfs.ext4 /dev/$BOOT &&
-mount /dev/$BOOT /mnt/boot &&
+yes | mkfs.ext4 $BOOT &&
+mount $BOOT /mnt/boot
 }
 
 boot_partition
@@ -25,23 +27,29 @@ boot_partition
 
 function efi_partition {
 mkdir -p /mnt/boot/efi &&
-mount /dev/$EFI /mnt/boot/efi &&
+mount $EFI /mnt/boot/efi
 }
+
+efi_partition
 
 # home partition
 
 function home_partition {
 mkdir -p /mnt/home &&
-mkfs.ext4 /dev/$HOME &&
-mount /dev/$HOME /mnt/home &&
+yes | mkfs.ext4 $HOME &&
+mount $HOME /mnt/home
 }
+
+home_partition
 
 # package 
 
-function package {
-pacstrap /mnt base base-devel linux-zen linux-firmware intel-ucode git neovim --noconfirm
+function packages {
+pacstrap /mnt base base-devel linux-zen linux-firmware intel-ucode mkinitcpio git neovim --noconfirm &&
 genfstab -U /mnt >> /mnt/etc/fstab
 }
+
+packages
 
 # chroot
 
