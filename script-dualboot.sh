@@ -1,5 +1,3 @@
-NAME=null
-PASS=1511
 EFI=/dev/nvme0n1p1
 BOOT=/dev/nvme0n1p5
 ROOT=/dev/nvme0n1p6
