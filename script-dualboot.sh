@@ -65,5 +65,18 @@ clear &&
 echo " packages installed"
 sleep 2
 
+#network
+clear &&
+function network {
+mkdir -p /mnt/var/lib/iwd &&
+cp /var/lib/iwd/*.psk /mnt/var/lib/iwd/
+}
+
+network
+
+clear &&
+echo "network configurated"
+sleep2
+
 # chroot
-arch-chroot /mnt /root/post/install.sh
+arch-chroot /mnt 
