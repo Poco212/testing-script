@@ -13,10 +13,10 @@ mount $ROOT /mnt
 
 root_partition
 clear &&
+echo "root partition done" &&
 sleep 2 &&
-echo "root partition done"
 # boot partition
-
+clear &&
 function boot_partition {
 mkdir -p /mnt/boot &&
 yes | mkfs.ext4 $BOOT &&
@@ -24,6 +24,9 @@ mount $BOOT /mnt/boot
 }
 
 boot_partition
+clear &&
+echo "boot partition done" &&
+sleep 2 &&
 
 # efi partition
 
