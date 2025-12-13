@@ -1,9 +1,9 @@
 NAME=null
 PASS=1511
-EFI=/dev/
-BOOT=/dev/
-ROOT=/dev/
-HOME=/dev
+EFI=/dev/nvme0n1p1
+BOOT=/dev/nvme0n1p5
+ROOT=/dev/nvme0n1p6
+HOME=/dev/nvme0n1p7
 
 # root partition
 function root_partition {
