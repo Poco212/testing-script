@@ -67,4 +67,4 @@ sleep 2
 
 # chroot
 
-arch-chroot /mnt /post/install.sh
+arch-chroot /mnt post/install.sh
