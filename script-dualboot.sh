@@ -67,16 +67,4 @@ sleep 2
 
 # chroot
 
-arch-chroot /mnt /bin/bash
-
-#hostname
-clear &&
-function hostname {
-echo "testing" > /etc/hostname
-}
-
-hostname
-clear &&
-echo "hostname done"
-sleep 2
-#zoneinfo
+arch-chroot /mnt /post/install.sh
