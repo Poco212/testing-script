@@ -3,7 +3,7 @@ PASS=1511
 EFI=/dev/nvme0n1p1
 BOOT=/dev/nvme0n1p5
 ROOT=/dev/nvme0n1p6
-HOME=/dev/nvme0n1p7
+HOMEE=/dev/nvme0n1p7
 
 # root partition
 function root_partition {
@@ -44,8 +44,8 @@ sleep 2
 clear &&
 function home_partition {
 mkdir -p /mnt/home &&
-yes | mkfs.ext4 $HOME &&
-mount $HOME /mnt/home
+yes | mkfs.ext4 $HOMEE &&
+mount $HOMEE /mnt/home
 }
 
 home_partition
