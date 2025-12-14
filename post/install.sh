@@ -95,6 +95,6 @@ echo "#linux zen preset" > /etc/mkinitcpio.d/linux-zen.preset &&
 echo 'ALL_config="/etc/mkinitcpio.d/default.conf"' >> /etc/mkinitcpio.d/linux-zen.preset &&
 echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /etc/mkinitcpio.d/linux-zen.preset &&
 echo "PRESETS=('default')" >> /etc/mkinitcpio.d/linux-zen.preset &&
-echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /etc/mkinitcpio.d/linux-zen.preset &&
+echo 'default_uki="/boot/efi/EFI/Linux/arch-linux-zen.efi"' >> /etc/mkinitcpio.d/linux-zen.preset &&
 bootctl update &&
 mkinitcpio -P
