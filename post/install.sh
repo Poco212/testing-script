@@ -47,7 +47,7 @@ sleep 2
 
 #boot
 clear &&
-rm -fr initramfs* &&
+rm -fr /boot/initramfs-* &&
 mkdir -p /boot/kernel /boot/efi/linux &&
 mv /boot/*-ucode.img /boot/vmlinuz-* /boot/kernel &&
 bootctl --path=/boot/efi install &&
