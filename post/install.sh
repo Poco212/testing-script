@@ -59,7 +59,6 @@ sleep 2
 clear &&
 mv -f /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi.bak &&
 cp /boot/efi/EFI/systemd/systemd-bootx64.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi &&
-mkdir -p /boot/efi/loader/entries &&
 cat << 'EOF' > /boot/efi/loader/entries/windows.conf
 title  windows boot manager
 efi    /EFI/Microsoft/Boot/bootmgfw.efi.bak
