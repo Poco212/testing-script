@@ -39,7 +39,7 @@ sleep 2
 clear &&
 mkdir -p /etc/cmdline.d &&
 touch /etc/cmdline.d/{01-boot.conf,02-mods.conf,03-secs.conf,04-perf.conf,05-nets.conf,06-misc.conf} &&
-echo "root=/dev/nvme0n1p6" > /etc/cmdline.d/01-boot.conf &&
+echo "root=/dev/nvme0n1p5" > /etc/cmdline.d/01-boot.conf &&
 echo "rw" > /etc/cmdline.d/06-misc.conf &&
 clear &&
 echo "cmdline done"
