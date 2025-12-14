@@ -63,4 +63,19 @@ echo "network configurated"
 sleep 2
 
 #hostname
-arch-chroot /mnt 
+echo "testing" > /mnt/etc/hostname &&
+clear &&
+echo "hostname done"
+sleep 2
+
+#timectl
+clear &&
+arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime &&
+arch-chroot /mnt hwclock --systohc &&
+arch-chroot /mnt timedatectl set-ntp true &&
+arch-chroot /mnt timedatectl set-timezone Asia/Jakarta &&
+arch-chroot /mnt timedatectl status &&
+arch-chroot /mnt timedatectl show-timesync --all &&
+clear &&
+echo "timedate done"
+sleep 2
