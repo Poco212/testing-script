@@ -1,7 +1,6 @@
 EFI=/dev/nvme0n1p1
-BOOT=/dev/nvme0n1p5
-ROOT=/dev/nvme0n1p6
-HOMEE=/dev/nvme0n1p7
+ROOT=/dev/nvme0n1p5
+HOMEE=/dev/nvme0n1p6
 
 # root partition
 function root_partition {
@@ -13,19 +12,6 @@ root_partition
 clear &&
 echo "root partition done" &&
 sleep 2 &&
-# boot partition
-clear &&
-function boot_partition {
-mkdir -p /mnt/boot &&
-yes | mkfs.ext4 $BOOT &&
-mount $BOOT /mnt/boot
-}
-
-boot_partition
-clear &&
-echo "boot partition done" &&
-sleep 2 &&
-
 # efi partition
 clear &&
 function efi_partition {
