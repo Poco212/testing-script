@@ -44,3 +44,19 @@ echo "rw" > /etc/cmdline.d/06-misc.conf &&
 clear &&
 echo "cmdline done"
 sleep 2
+
+#boot
+clear &&
+mkdir -p /boot/kernel &&
+mv /boot/*-ucode.img /boot/vmlinuz-* /boot/kernel &&
+bootctl --path=/boot/efi install &&
+mv /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi.bak &&
+cp /boot/efi/EFI/systemd/systemd-bootx64.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi &&
+mkdir -p /boot/efi/EFI/loader/entries &&
+cat << 'EOF' > /boot/efi/EFI/loader/entries/windows.conf
+title  windows boot manager
+efi    /EFI/Microsoft/Boot/bootmgfw.efi.bak
+EOF
+clear &&
+echo "boot done"
+
