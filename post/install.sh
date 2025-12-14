@@ -82,6 +82,7 @@ sleep 2
 #mkinitcpio
 clear &&
 mv /etc/mkinitcpio.conf /etc/mkinitcpio.d/default.conf &&
+echo "" > /etc/mkinitcpio.d/default.conf &&
 export CPIOHOOK="base systemd autodetect microcode modconf kms keyboard block filesystems fsck" &&
 printf "MODULES=()\nBINARIES=()\nFILES=()\nHOOKS=($CPIOHOOK)" >> /etc/mkinitcpio.d/default.conf &&
 clear &&
