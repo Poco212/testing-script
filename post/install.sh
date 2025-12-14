@@ -49,14 +49,51 @@ sleep 2
 clear &&
 mkdir -p /boot/kernel &&
 mv /boot/*-ucode.img /boot/vmlinuz-* /boot/kernel &&
+rm -fr initramfs-* &&
 bootctl --path=/boot/efi install &&
+clear &&
+echo "boot done"
+sleep 2
+
+#entries
+clear &&
+rm -fr /boot/EFI /boot/loader/entries &&
 mv /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi.bak &&
 cp /boot/efi/EFI/systemd/systemd-bootx64.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi &&
-mkdir -p /boot/efi/EFI/loader/entries &&
-cat << 'EOF' > /boot/efi/EFI/loader/entries/windows.conf
+mkdir -p /boot/efi/loader/entries &&
+cat << 'EOF' > /boot/efi/loader/entries/windows.conf
 title  windows boot manager
 efi    /EFI/Microsoft/Boot/bootmgfw.efi.bak
 EOF
 clear &&
-echo "boot done"
+echo "entries done"
+sleep 2
 
+#loader 
+clear &&
+cat << 'EOF' > /boot/efi/loader/loader.conf
+timeout 3
+auto-entries 0
+EOF
+clear &&
+echo "loader done"
+sleep 2
+
+#mkinitcpio
+clear &&
+mv /etc/mkinitcpio.conf /etc/mkinitcpio.d/default.conf &&
+export CPIOHOOK="base systemd autodetect microcode modconf kms keyboard block filesystems fsck" &&
+printf "MODULES=()\nBINARIES=()\nFILES=()\nHOOKS=($CPIOHOOK)" >> /etc/mkinitcpio.d/default.conf &&
+clear &&
+echo "mkinitcpio done"
+sleep 2
+
+#efi generate
+clear &&
+echo "#linux zen preset" > /etc/mkinitcpio.d/linux-zen.preset &&
+echo 'ALL_config="/etc/mkinitcpio.d/default.conf"' >> /etc/mkinitcpio.d/linux-zen.preset &&
+echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /etc/mkinitcpio.d/linux-zen.preset &&
+echo "PRESETS=('default')" >> /etc/mkinitcpio.d/linux-zen.preset &&
+echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /etc/mkinitcpio.d/linux-zen.preset &&
+bootctl update &&
+mkinitcpio -P
