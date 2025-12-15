@@ -1,6 +1,6 @@
-EFI=/dev/sda1
-ROOT=/dev/sdb2
-HOMEE=/dev/sdb3
+EFI=/dev/nvme0n1p1
+ROOT=/dev/nvme0n1p5
+HOMEE=/dev/nvme0n1p6
 
 # root partition
 function root_partition {
@@ -100,7 +100,7 @@ sleep 2
 clear &&
 mkdir -p /mnt/etc/cmdline.d &&
 touch /mnt/etc/cmdline.d/{01-boot.conf,02-mods.conf,03-secs.conf,04-perf.conf,05-nets.conf,06-misc.conf} &&
-echo "root=/dev/sdb2" > /mnt/etc/cmdline.d/01-boot.conf &&
+echo "root=/dev/nvme0n1p5" > /mnt/etc/cmdline.d/01-boot.conf &&
 echo "rw" > /mnt/etc/cmdline.d/06-misc.conf &&
 clear &&
 echo "cmdline done"
@@ -110,4 +110,8 @@ sleep 2
 clear &&
 rm -fr /mnt/boot/initramfs-* &&
 mkdir -p /mnt/boot/kernel /mnt/boot/efi/EFI/Linux &&
-mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel 
+mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
+grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi/EFI/Linux --bootloader-id=Arch 
+clear &&
+echo "boot done"
+sleep 2
