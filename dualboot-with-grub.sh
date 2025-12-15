@@ -108,7 +108,8 @@ clear &&
 rm -fr /mnt/boot/initramfs-* &&
 mkdir -p /mnt/boot/kernel /mnt/boot/efi/EFI/Linux &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
-grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi/EFI/Linux --bootloader-id=Arch 
+grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi/EFI/Linux --bootloader-id=Arch &&
+sleep 5
 clear &&
 echo "boot done"
 sleep 2
