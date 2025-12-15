@@ -1,33 +1,47 @@
-EFI=/dev/nvme0n1p1
-ROOT=/dev/nvme0n1p5
-HOMEE=/dev/nvme0n1p6
+efi_path=/dev/nvme0n1p1
+linux_path=/dev/nvme0n1p5
+root_path=/dev/nvme0n1p6
+home_path=/dev/nvme0n1p7
 
 # root partition
 function root_partition {
-yes | mkfs.ext4 $ROOT &&
-mount $ROOT /mnt
+yes | mkfs.ext4 $root_path &&
+mount $root_path /mnt
 }
 root_partition
 clear &
 echo "root partition done" &&
 sleep 2 &&
+
 # efi partition
 clear &&
 function efi_partition {
 mkdir -p /mnt/boot/efi &&
-mount $EFI /mnt/boot/efi
+mount $efi_path /mnt/boot/efi
 }
 efi_partition
 clear &&
 echo "efi partition done" &&
 sleep 2
 
+# linux partition
+clear &&
+function linux_partition {
+yes | mkfs.ext4 $linux_path &&
+mkdir -p /mnt/boot/efi/linux &&
+mount $linux_path /mnt/boot/efi/linux
+}
+linux_partition
+clear &
+echo "linux partition done" &&
+sleep 2 &&
+
 # home partition
 clear &&
 function home_partition {
 mkdir -p /mnt/home &&
-yes | mkfs.ext4 $HOMEE &&
-mount $HOMEE /mnt/home
+yes | mkfs.ext4 $home_path &&
+mount $home_path /mnt/home
 }
 home_partition
 clear &&
@@ -110,6 +124,7 @@ sleep 5
 clear &&
 echo "grub install done"
 sleep 2
+exit 1
 
 #mkinitcpio
 clear &&
