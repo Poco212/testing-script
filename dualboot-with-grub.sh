@@ -106,10 +106,32 @@ sleep 2
 #boot
 clear &&
 rm -fr /mnt/boot/initramfs-* &&
-mkdir -p /mnt/boot/kernel /mnt/boot/efi/EFI/Linux &&
+mkdir -p /mnt/boot/kernel &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
-grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi/EFI/Linux --bootloader-id=Arch &&
+grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi --bootloader-id=Arch &&
+sed -i 's/^#GRUB_DISABLE_OS_PROBER/GRUB_DISABLE_OS_PROBER/' /mnt/etc/default/grub &&
+grub-mkconfig -o /mnt/boot/grub/grub.cfg &&
 sleep 5
 clear &&
 echo "boot done"
 sleep 2
+
+#mkinitcpio
+clear &&
+mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
+echo "#linux zen default" > /mnt/etc/mkinitcpio.d/default.conf &&
+export CPIOHOOK="base systemd autodetect microcode modconf kms keyboard block filesystems fsck" &&
+printf "MODULES=()\nBINARIES=()\nFILES=()\nHOOKS=($CPIOHOOK)" >> /mnt/etc/mkinitcpio.d/default.conf &&
+clear &&
+echo "mkinitcpio done"
+sleep 2
+
+#efi generate
+clear &&
+echo "#linux zen preset" > /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'ALL_config="/etc/mkinitcpio.d/default.conf"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo "PRESETS=('default')" >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+mkinitcpio -P &&
+sleep 5 
