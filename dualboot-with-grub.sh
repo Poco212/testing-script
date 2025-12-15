@@ -103,19 +103,19 @@ clear &&
 echo "cmdline done"
 sleep 2
 
-#boot
+#grub install
 clear &&
-mkdir -p /mnt/boot/kernel &&
-mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch &&
 echo 'GRUB_DISABLE_OS_PROBER=false' >> /mnt/etc/default/grub
 sleep 5
 clear &&
-echo "boot done"
+echo "grub install done"
 sleep 2
 
 #mkinitcpio
 clear &&
+mkdir -p /mnt/boot/kernel /mnt/boot/efi/linux &&
+mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
 mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
 echo "#linux zen default" > /mnt/etc/mkinitcpio.d/default.conf &&
 export CPIOHOOK="base systemd autodetect microcode modconf kms keyboard block filesystems fsck" &&
@@ -132,11 +132,12 @@ echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /mnt/etc/mkinitcpio.d/linux-
 echo "PRESETS=('default')" >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 arch-chroot /mnt mkinitcpio -P
-
+sleep 2
+echo "efi generate done"
 #create entries 
 clear &&
 EFI_UUID=$(blkid -s UUID -o value $EFI)
-cat << 'EOF' >> /mnt/etc/grub.d/40_custom
+cat << EOF >> /mnt/etc/grub.d/40_custom
 menuentry "Arch Linux (UKI linux-zen)" {
     insmod fat
     insmod chain
@@ -144,7 +145,6 @@ menuentry "Arch Linux (UKI linux-zen)" {
     chainloader /efi/linux/arch-linux-zen.efi
 }
 EOF
-sleep 5
 clear &&
 echo "entry done"
 sleep 2
