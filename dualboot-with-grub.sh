@@ -39,7 +39,7 @@ sleep 2
 # package 
 clear &&
 function packages {
-pacstrap /mnt base base-devel linux-zen linux-firmware intel-ucode mkinitcpio git neovim --noconfirm &&
+pacstrap /mnt base base-devel linux-zen linux-firmware intel-ucode mkinitcpio git neovim grub os-prober efibootmgr --noconfirm &&
 genfstab -U /mnt >> /mnt/etc/fstab
 }
 
@@ -69,7 +69,7 @@ sleep 2
 
 #timectl
 clear &&
-arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime &&
+arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Jakarta /mnt/etc/localtime &&
 arch-chroot /mnt hwclock --systohc &&
 arch-chroot /mnt timedatectl set-ntp true &&
 arch-chroot /mnt timedatectl set-timezone Asia/Jakarta &&
