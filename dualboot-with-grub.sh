@@ -72,6 +72,7 @@ arch-chroot /mnt timedatectl set-ntp true &&
 arch-chroot /mnt timedatectl set-timezone Asia/Jakarta &&
 arch-chroot /mnt timedatectl status &&
 arch-chroot /mnt timedatectl show-timesync --all &&
+sleep 5
 echo "timedate done"
 sleep 2
 
