@@ -166,6 +166,3 @@ sleep 2
 #generate grub
 clear &&
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg &&
-sleep 5
-clear &&
-echo "boot done"
