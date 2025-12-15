@@ -133,6 +133,22 @@ echo "PRESETS=('default')" >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 arch-chroot /mnt mkinitcpio -P
 
+#create entries 
+clear &&
+EFI_UUID=$(blkid -s UUID -o value $EFI)
+cat << 'EOF' > /mnt/etc/grub.d/41_custome
+menuentry "Arch Linux (UKI linux-zen)" {
+    insmod fat
+    insmod chain
+    search --no-floppy --set=root --fs-uuid $EFI_UUID
+    chainloader /efi/linux/arch-linux-zen.efi
+}
+EOF
+sleep 5
+clear &&
+echo "entry done"
+sleep 2
+
 #generate grub
 clear &&
 arch-chroot /mnt grub-mkconfig -o /mnt/boot/grub/grub.cfg &&
