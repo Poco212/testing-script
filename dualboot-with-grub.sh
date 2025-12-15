@@ -136,7 +136,7 @@ arch-chroot /mnt mkinitcpio -P
 #create entries 
 clear &&
 EFI_UUID=$(blkid -s UUID -o value $EFI)
-cat << 'EOF' > /mnt/etc/grub.d/41_custome
+cat << 'EOF' >> /mnt/etc/grub.d/40_custom
 menuentry "Arch Linux (UKI linux-zen)" {
     insmod fat
     insmod chain
