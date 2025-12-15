@@ -120,7 +120,6 @@ sleep 2
 clear &&
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch &&
 echo 'GRUB_DISABLE_OS_PROBER=false' >> /mnt/etc/default/grub
-sleep 5
 clear &&
 echo "grub install done"
 sleep 2
