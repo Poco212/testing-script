@@ -72,7 +72,6 @@ arch-chroot /mnt timedatectl set-ntp true &&
 arch-chroot /mnt timedatectl set-timezone Asia/Jakarta &&
 arch-chroot /mnt timedatectl status &&
 arch-chroot /mnt timedatectl show-timesync --all &&
-sleep 5
 echo "timedate done"
 sleep 2
 
@@ -151,7 +150,7 @@ sleep 2
 
 #generate grub
 clear &&
-arch-chroot /mnt grub-mkconfig -o /mnt/boot/grub/grub.cfg &&
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg &&
 sleep 5
 clear &&
 echo "boot done"
