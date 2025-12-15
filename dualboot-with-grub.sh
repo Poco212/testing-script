@@ -100,7 +100,7 @@ sleep 2
 clear &&
 mkdir -p /mnt/etc/cmdline.d &&
 touch /mnt/etc/cmdline.d/{01-boot.conf,02-mods.conf,03-secs.conf,04-perf.conf,05-nets.conf,06-misc.conf} &&
-echo "root=/dev/nvme0n1p5" > /mnt/etc/cmdline.d/01-boot.conf &&
+echo "root=/dev/sdb2" > /mnt/etc/cmdline.d/01-boot.conf &&
 echo "rw" > /mnt/etc/cmdline.d/06-misc.conf &&
 clear &&
 echo "cmdline done"
