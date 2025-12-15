@@ -108,9 +108,9 @@ clear &&
 rm -fr /mnt/boot/initramfs-* &&
 mkdir -p /mnt/boot/kernel &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
-grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi --bootloader-id=Arch &&
+grub-install --target=x86_64-efi --efi-directory=/mnt/boot/efi --bootloader-id=Arch --root-directory=/mnt --directory=/mnt/usr/lib/grub/x86_64-efi &&
 sed -i 's/^#GRUB_DISABLE_OS_PROBER/GRUB_DISABLE_OS_PROBER/' /mnt/etc/default/grub &&
-grub-mkconfig -o /mnt/boot/grub/grub.cfg &&
+arch-chroot /mnt grub-mkconfig -o /mnt/boot/grub/grub.cfg &&
 sleep 5
 clear &&
 echo "boot done"
@@ -133,5 +133,4 @@ echo 'ALL_config="/etc/mkinitcpio.d/default.conf"' >> /mnt/etc/mkinitcpio.d/linu
 echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo "PRESETS=('default')" >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
-mkinitcpio -P &&
-sleep 5 
+arch-chroot /mnt mkinitcpio -P
