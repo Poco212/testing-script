@@ -16,8 +16,8 @@ sleep 2 &&
 # efi partition
 clear &&
 function efi_partition {
-mkdir -p /mnt/boot/efi &&
-mount $efi_path /mnt/boot/efi
+mkdir -p /mnt/boot &&
+mount $efi_path /mnt/boot
 }
 efi_partition
 clear &&
@@ -27,9 +27,9 @@ sleep 2
 # linux partition
 clear &&
 function linux_partition {
-yes | mkfs.ext4 $linux_path &&
-mkdir -p /mnt/boot/efi/linux &&
-mount $linux_path /mnt/boot/efi/linux
+yes | mkfs.vfat -F32 -n EFI $linux_path &&
+mkdir -p /mnt/boot/efi &&
+mount $linux_path /mnt/boot/efi
 }
 linux_partition
 clear &
@@ -118,7 +118,7 @@ sleep 2
 
 #grub install
 clear &&
-arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch &&
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch &&
 echo 'GRUB_DISABLE_OS_PROBER=false' >> /mnt/etc/default/grub
 clear &&
 echo "grub install done"
@@ -127,7 +127,7 @@ exit 1
 
 #mkinitcpio
 clear &&
-mkdir -p /mnt/boot/kernel &&
+mkdir -p /mnt/boot/kernel /mnt/boot/efi/linux &&
 rm -fr /mnt/boot/initramfs-* &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
 mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
@@ -151,7 +151,7 @@ echo "efi generate done"
 
 #create entries 
 clear &&
-EFI_UUID=$(blkid -s UUID -o value $EFI)
+EFI_UUID=$(blkid -s UUID -o value $linux_path)
 cat << EOF >> /mnt/etc/grub.d/40_custom
 menuentry "Arch Linux" {
     insmod fat
