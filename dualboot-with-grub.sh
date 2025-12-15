@@ -137,11 +137,11 @@ echo "efi generate done"
 clear &&
 EFI_UUID=$(blkid -s UUID -o value $EFI)
 cat << EOF >> /mnt/etc/grub.d/40_custom
-menuentry "Arch Linux (UKI linux-zen)" {
+menuentry "Arch Linux" {
     insmod fat
     insmod chain
     search --no-floppy --set=root --fs-uuid $EFI_UUID
-    chainloader /efi/linux/arch-linux-zen.efi
+    chainloader /linux/arch-linux-zen.efi
 }
 EOF
 clear &&
