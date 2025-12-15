@@ -16,8 +16,8 @@ sleep 2 &&
 # efi partition
 clear &&
 function efi_partition {
-mkdir -p /mnt/boot &&
-mount $efi_path /mnt/boot
+mkdir -p /mnt/boot/efi &&
+mount $efi_path /mnt/boot/efi
 }
 efi_partition
 clear &&
@@ -28,8 +28,8 @@ sleep 2
 clear &&
 function linux_partition {
 yes | mkfs.vfat -F32 -n EFI $linux_path &&
-mkdir -p /mnt/boot/efi &&
-mount $linux_path /mnt/boot/efi
+mkdir -p /mnt/boot/efi/EFI/Linux &&
+mount $linux_path /mnt/boot/efi/EFI/Linux
 }
 linux_partition
 clear &
@@ -123,6 +123,7 @@ echo 'GRUB_DISABLE_OS_PROBER=false' >> /mnt/etc/default/grub
 clear &&
 echo "grub install done"
 sleep 2
+exit 1
 
 #mkinitcpio
 clear &&
