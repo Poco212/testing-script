@@ -110,7 +110,7 @@ sleep 2
 clear &&
 mkdir -p /mnt/etc/cmdline.d &&
 touch /mnt/etc/cmdline.d/{01-boot.conf,02-mods.conf,03-secs.conf,04-perf.conf,05-nets.conf,06-misc.conf} &&
-echo "root=/dev/nvme0n1p5" > /mnt/etc/cmdline.d/01-boot.conf &&
+echo "root=/dev/nvme0n1p6" > /mnt/etc/cmdline.d/01-boot.conf &&
 echo "rw" > /mnt/etc/cmdline.d/06-misc.conf &&
 clear &&
 echo "cmdline done"
@@ -128,7 +128,7 @@ exit 1
 
 #mkinitcpio
 clear &&
-mkdir -p /mnt/boot/kernel /mnt/boot/efi/linux &&
+mkdir -p /mnt/boot/kernel &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
 mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
 echo "#linux zen default" > /mnt/etc/mkinitcpio.d/default.conf &&
