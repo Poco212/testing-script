@@ -66,13 +66,12 @@ sleep 2
 
 #timectl
 clear &&
-arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Jakarta /mnt/etc/localtime &&
+ln -sf /usr/share/zoneinfo/Asia/Jakarta /mnt/etc/localtime &&
 arch-chroot /mnt hwclock --systohc &&
 arch-chroot /mnt timedatectl set-ntp true &&
 arch-chroot /mnt timedatectl set-timezone Asia/Jakarta &&
 arch-chroot /mnt timedatectl status &&
 arch-chroot /mnt timedatectl show-timesync --all &&
-clear &&
 echo "timedate done"
 sleep 2
 
