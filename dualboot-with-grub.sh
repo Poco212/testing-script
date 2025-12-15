@@ -148,6 +148,7 @@ echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d
 arch-chroot /mnt mkinitcpio -P
 sleep 2
 echo "efi generate done"
+
 #create entries 
 clear &&
 EFI_UUID=$(blkid -s UUID -o value $EFI)
