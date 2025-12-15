@@ -123,7 +123,6 @@ echo 'GRUB_DISABLE_OS_PROBER=false' >> /mnt/etc/default/grub
 clear &&
 echo "grub install done"
 sleep 2
-exit 1
 
 #mkinitcpio
 clear &&
