@@ -128,6 +128,7 @@ sleep 2
 #mkinitcpio
 clear &&
 mkdir -p /mnt/boot/kernel /mnt/boot/efi/linux &&
+rm -fr /mnt/boot/initramfs-* &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
 mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
 echo "#linux zen default" > /mnt/etc/mkinitcpio.d/default.conf &&
