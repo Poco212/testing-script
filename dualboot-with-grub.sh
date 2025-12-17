@@ -107,16 +107,6 @@ clear &&
 echo "username done"
 sleep 2
 
-#cmdline
-clear &&
-mkdir -p /mnt/etc/cmdline.d &&
-touch /mnt/etc/cmdline.d/{01-boot.conf,02-mods.conf,03-secs.conf,04-perf.conf,05-nets.conf,06-misc.conf} &&
-echo "root=/dev/nvme0n1p5" > /mnt/etc/cmdline.d/01-boot.conf &&
-echo "rw" > /mnt/etc/cmdline.d/06-misc.conf &&
-clear &&
-echo "cmdline done"
-sleep 2
-
 #grub install
 clear &&
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch &&
@@ -163,7 +153,7 @@ echo "efi generate done"
 clear &&
 cat << EOF >> /mnt/etc/grub.d/40_custom
 menuentry "Arch Linux" {
-    linux /kernel/vmlinuz-linux-zen
+    linux /kernel/vmlinuz-linux-zen root=UUID=$(blkid -s UUID -o value $root_path)
     initrd /kernel/intel-ucode.img
     initrd /initramfs-linux-zen.img
 }
