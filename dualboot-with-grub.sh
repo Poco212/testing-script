@@ -1,7 +1,7 @@
 efi_path=/dev/nvme0n1p1
-linux_path=/dev/nvme0n1p5
-root_path=/dev/nvme0n1p6
-home_path=/dev/nvme0n1p7
+linux_path=/dev/nvme0n1p4
+root_path=/dev/nvme0n1p5
+home_path=/dev/nvme0n1p6
 
 # root partition
 function root_partition {
@@ -13,28 +13,29 @@ clear &
 echo "root partition done" &&
 sleep 2 &&
 
-# efi partition
-clear &&
-function efi_partition {
-mkdir -p /mnt/boot &&
-mount $efi_path /mnt/boot
-}
-efi_partition
-clear &&
-echo "efi partition done" &&
-sleep 2
-
 # linux partition
 clear &&
 function linux_partition {
-yes | mkfs.vfat -F32 -n EFI $linux_path &&
-mkdir -p /mnt/boot/efi &&
-mount $linux_path /mnt/boot/efi
+yes | mkfs.ext4 $linux_path &&
+mkdir -p /mnt/boot &&
+mount $linux_path /mnt/boot
 }
 linux_partition
 clear &
 echo "linux partition done" &&
 sleep 2 &&
+
+
+# efi partition
+clear &&
+function efi_partition {
+mkdir -p /mnt/boot/efi &&
+mount $efi_path /mnt/boot/efi
+}
+efi_partition
+clear &&
+echo "efi partition done" &&
+sleep 2
 
 # home partition
 clear &&
@@ -110,7 +111,7 @@ sleep 2
 clear &&
 mkdir -p /mnt/etc/cmdline.d &&
 touch /mnt/etc/cmdline.d/{01-boot.conf,02-mods.conf,03-secs.conf,04-perf.conf,05-nets.conf,06-misc.conf} &&
-echo "root=/dev/nvme0n1p6" > /mnt/etc/cmdline.d/01-boot.conf &&
+echo "root=/dev/nvme0n1p5" > /mnt/etc/cmdline.d/01-boot.conf &&
 echo "rw" > /mnt/etc/cmdline.d/06-misc.conf &&
 clear &&
 echo "cmdline done"
@@ -127,7 +128,6 @@ sleep 2
 #mkinitcpio
 clear &&
 mkdir -p /mnt/boot/kernel /mnt/boot/efi/linux &&
-rm -fr /mnt/boot/initramfs-* &&
 mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
 mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
 echo "#linux zen default" > /mnt/etc/mkinitcpio.d/default.conf &&
@@ -143,20 +143,28 @@ echo "#linux zen preset" > /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo 'ALL_config="/etc/mkinitcpio.d/default.conf"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo "PRESETS=('default')" >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'default_image="/boot/initramfs-linux-zen.img"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 echo 'default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
 arch-chroot /mnt mkinitcpio -P
 sleep 2
 echo "efi generate done"
 
 #create entries 
+#EFI_UUID=$(blkid -s UUID -o value $efi_path)
+#cat << EOF >> /mnt/etc/grub.d/40_custom
+#menuentry "Arch Linux" {
+#    insmod fat
+#    insmod chain
+#    search --no-floppy --set=root --fs-uuid $EFI_UUID
+#    chainloader /linux/arch-linux-zen.efi
+#}
+#EOF
 clear &&
-EFI_UUID=$(blkid -s UUID -o value $efi_path)
 cat << EOF >> /mnt/etc/grub.d/40_custom
 menuentry "Arch Linux" {
-    insmod fat
-    insmod chain
-    search --no-floppy --set=root --fs-uuid $EFI_UUID
-    chainloader /linux/arch-linux-zen.efi
+    linux /kernel/vmlinuz-linux-zen
+    initrd /kernel/intel-ucode.img
+    initrd /initramfs-linux-zen.img
 }
 EOF
 clear &&
