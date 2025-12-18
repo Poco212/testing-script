@@ -115,27 +115,42 @@ clear &&
 echo "grub install done"
 sleep 2
 
+#mkinitcpio
+clear &&
+mkdir -p /mnt/boot/kernel &&
+rm -fr /mnt/boot/initramfs-* &&
+mv /mnt/boot/*-ucode.img /mnt/boot/vmlinuz-* /mnt/boot/kernel &&
+mv -f /mnt/etc/mkinitcpio.conf /mnt/etc/mkinitcpio.d/default.conf &&
+echo "#linux zen default" > /mnt/etc/mkinitcpio.d/default.conf &&
+export CPIOHOOK="base systemd autodetect microcode modconf kms keyboard block filesystems fsck" &&
+printf "MODULES=()\nBINARIES=()\nFILES=()\nHOOKS=($CPIOHOOK)" >> /mnt/etc/mkinitcpio.d/default.conf &&
+clear &&
+echo "mkinitcpio done"
+sleep 2
+
+#efi generate
+clear &&
+echo "#linux zen preset" > /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'ALL_config="/etc/mkinitcpio.d/default.conf"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'ALL_kver="/boot/kernel/vmlinuz-linux-zen"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo "PRESETS=('default')" >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo 'default_image="/boot/initramfs-linux-zen.img"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+echo '#default_uki="/boot/efi/linux/arch-linux-zen.efi"' >> /mnt/etc/mkinitcpio.d/linux-zen.preset &&
+arch-chroot /mnt mkinitcpio -P
+sleep 2
+echo "efi generate done"
+
 #create entries 
-#EFI_UUID=$(blkid -s UUID -o value $efi_path)
-#cat << EOF >> /mnt/etc/grub.d/40_custom
-#menuentry "Arch Linux" {
-#    insmod fat
-#    insmod chain
-#    search --no-floppy --set=root --fs-uuid $EFI_UUID
-#    chainloader /linux/arch-linux-zen.efi
-#}
-#EOF
-#clear &&
-#cat << EOF >> /mnt/etc/grub.d/40_custom
-#menuentry "Arch Linux" {
-#   linux /kernel/vmlinuz-linux-zen root=UUID=$(blkid -s UUID -o value $root_path)
-#  initrd /kernel/intel-ucode.img
-#  initrd /initramfs-linux-zen.img
-#}
-#EOF
-#clear &&
-#echo "entry done"
-#sleep 2
+cat << EOF >> /mnt/etc/grub.d/40_custom
+menuentry "Arch Linux" {
+   linux /kernel/vmlinuz-linux-zen root=UUID=$(blkid -s UUID -o value $root_path)
+   initrd /kernel/intel-ucode.img
+   initrd /initramfs-linux-zen.img
+}
+EOF
+clear &&
+echo "entry done"
+sleep 2
 
 #generate grub
 clear &&
