@@ -159,9 +159,9 @@ sleep 2
 function gen_secboot {
    if [[ ! -d "/mnt/etc/pacman.d/hooks" ]]; then
       mkdir /mnt/etc/pacman.d/hooks &&
-      cp /install/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks/
+      cp -r /install/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks/
    else
-      cp /install/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks/
+      cp -r /install/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks/
    fi
 
    arch-chroot /mnt sbctl create-keys &&
