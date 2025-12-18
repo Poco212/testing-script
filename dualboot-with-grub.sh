@@ -154,19 +154,19 @@ sleep 2
 
 #generate secure boot
 function gen_secboot {
-      if [[ ! -d "/mnt/etc/pacman.d/hooks" ]]; then
-        mkdir /mnt/etc/pacman.d/hooks
-        mv /testing-script/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks
-             else
-        mv /testing-script/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks
-     fi
+   if [[ ! -d "/mnt/etc/pacman.d/hooks" ]]; then
+      mkdir /mnt/etc/pacman.d/hooks
+      mv /testing-script/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks
+   else
+      mv /testing-script/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks
+   fi
 
-     arch-chroot /mnt sbctl create-keys &&
-     arch-chroot /mnt sbctl enroll-keys -m -i &&
-     arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Boot/bootx64.efi &&
-     arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Arch/grubx64.efi &&
+   arch-chroot /mnt sbctl create-keys &&
+   arch-chroot /mnt sbctl enroll-keys -m -i &&
+   arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Boot/bootx64.efi &&
+   arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Arch/grubx64.efi &&
        
-        # sbctl verify | sed -E 's|^.* (/.+) is not signed$|sbctl sign -s "\1"|e'
+   # sbctl verify | sed -E 's|^.* (/.+) is not signed$|sbctl sign -s "\1"|e'
 }
 
 clear &&
