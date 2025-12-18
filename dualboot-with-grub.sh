@@ -52,7 +52,7 @@ sleep 2
 # package 
 clear &&
 function packages {
-pacstrap /mnt base base-devel linux-zen linux-firmware intel-ucode mkinitcpio git neovim grub os-prober efibootmgr iwd --noconfirm &&
+pacstrap /mnt base base-devel linux-zen linux-firmware intel-ucode mkinitcpio git neovim grub sbctl os-prober efibootmgr iwd --noconfirm &&
 genfstab -U /mnt >> /mnt/etc/fstab
 }
 packages
