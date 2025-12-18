@@ -176,4 +176,4 @@ sleep 3
 
 #generate grub
 clear &&
-arch-chroot /mnt grub-mkconfi   g -o /boot/grub/grub.cfg
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
