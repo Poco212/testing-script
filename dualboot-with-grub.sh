@@ -63,8 +63,11 @@ sleep 2
 #network
 clear &&
 function network {
+cp /etc/systemd/network/* /mnt/etc/systemd/network &&
 mkdir -p /mnt/var/lib/iwd &&
-cp /var/lib/iwd/*.psk /mnt/var/lib/iwd/
+cp /var/lib/iwd/*.psk /mnt/var/lib/iwd/ &&
+mkdir -p /mnt/etc/pacman.d/hooks &&
+cp /install/etc/pacman.d/hooks/90-grub-update.hook /mnt/etc/pacman.d/hooks/
 }
 
 network
@@ -165,6 +168,7 @@ function gen_secboot {
    arch-chroot /mnt sbctl enroll-keys -m -i &&
    arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Boot/bootx64.efi &&
    arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Arch/grubx64.efi
+   arch-chroot /mnt sbctl verify | sed -E 's|^.* (/.+) is not signed$|sbctl sign -s "\1"|e'
 }
 
 clear &&
