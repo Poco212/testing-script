@@ -168,7 +168,7 @@ function gen_secboot {
    arch-chroot /mnt sbctl enroll-keys -m -i &&
    arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Boot/bootx64.efi &&
    arch-chroot /mnt sbctl sign --save /boot/efi/EFI/Arch/grubx64.efi &&
-   arch-chroot /mnt sbctl verify | sed -E 's|^.* (/.+) is not signed$|sbctl sign -s "\1"|e'
+   #arch-chroot /mnt sbctl verify | sed -E 's|^.* (/.+) is not signed$|sbctl sign -s "\1"|e'
 }
 
 clear &&
